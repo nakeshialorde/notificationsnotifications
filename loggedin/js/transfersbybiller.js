@@ -1,0 +1,51 @@
+$(function(){
+	console.log("ID:"+id);
+	$.ajax({
+		url:"https://e-solutionsgroup.com:8080/api/TransfersByBiller?sourceInstitutionId=8DB34F14-A886-4BDB-AC85-2351CDD0F715&billerId="+id,
+		crossDomain:true,
+		dataType:'json',
+		cache:false,
+		contentType:"application/json; charset=utf-8",
+		beforeSend:function(xhr){
+			xhr.setRequestHeader("Authorization","Bearer "+token);
+		},
+		success:function(data){
+			for(i=0;i<data.length;i++){
+				console.log(data);
+				$("<div></div>")
+					.addClass("transfer listItem")
+					.attr("transferID",data[i].TransferID)
+					.append(
+						$("<div></div>")
+							.addClass("created")
+							.text(data[i].Created),
+						$("<div></div>")
+							.addClass("transferId")
+							.text(data[i].TransferID),
+						$("<div></div>")
+							.addClass("sourceAccountNumber")
+							.text(data[i].SourceAccountNumber),
+						$("<div></div>")
+							.addClass("transferDescription")
+							.text(data[i].TransferDescription),
+						/*$("<div></div>")
+							.addClass("serviceName")
+							.text(data[i].ServiceName),*/
+						$("<div></div>")
+							.addClass("billerTransactionID")
+							.text(data[i].BillerTransactionID),
+						$("<div></div>")
+							.addClass("billerAccountNumber")
+							.text(data[i].BillerAccountNumber),
+						$("<div></div>")
+							.addClass("transferAmount")
+							.text(data[i].TransferAmount),
+						$("<div></div>")
+							.addClass("status")
+							.text(data[i].Status)
+					)
+					.appendTo("#transferList");
+			}
+		}
+	});
+});

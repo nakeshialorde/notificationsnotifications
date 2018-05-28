@@ -1,0 +1,105 @@
+.fieldRow{
+	margin-bottom:20px;
+}
+
+.fieldLabel,.infoField{
+	display:inline-block;
+	padding-top:5px;
+	padding-bottom:5px;
+}
+
+.fieldLabel{
+	width:100px;
+	margin-left:20px;
+}
+
+.infoField{
+	width:250px;
+	padding-left:5px;
+	padding-right:10px;
+	background:rgb(243, 243, 243);
+}
+
+#securityQuestionResponseRow{
+	padding:30px 0px;
+}
+
+.securityQuestionResponse{
+	margin-bottom:20px;
+	width:770px;
+}
+
+.securityQuestionResponse:nth-child(odd){
+	background:rgb(243, 243, 243);
+}
+
+.securityQuestionText, .securityResponseText{
+	display:inline-block;
+	width:635px;
+	padding-left:5px;
+	padding-right:10px;
+	padding-top:5px;
+	padding-bottom:5px;
+}
+
+.securityQuestionLabel{
+	display:inline-block;
+	margin-left:20px;
+	width:100px;
+	padding-top:5px;
+	padding-bottom:5px;
+}
+
+.securityResponseLabel{
+	display:inline-block;
+	margin-left:20px;
+	width:100px;
+}
+
+#associatedAccountList{
+	width:770px;
+}
+
+.associatedAccount{
+	padding:5px;
+}
+
+.associatedAccount:nth-child(even){
+	background:rgb(243, 243, 243);
+}
+
+.associatedAccount > div{
+	display:inline-block;
+}
+
+.associatedAccount > .accountNumber{
+	width:160px;
+}
+
+.associatedAccount > .accountType{
+	width:200px;
+}
+
+span.submitReviewButton{
+	color:white;
+	margin:5px;
+	padding:5px 10px;
+	border:1px solid #3a3a3a;
+	border-radius:5px;
+	background-color:#444444;
+	cursor:pointer;
+}
+
+#responseBar{
+	border-top:2px solid rgb(229, 229, 229);
+	padding:30px 0px 0px 70px;
+}
+
+#status{
+	padding:5px;
+}
+
+#statusDescription{
+	padding:5px;
+	width:615px;
+}

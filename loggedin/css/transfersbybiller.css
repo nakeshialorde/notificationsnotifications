@@ -1,0 +1,31 @@
+.created{
+	width:200px;
+}
+
+.transferId{
+	width:50px;
+}
+
+.transferDescription{
+	width:200px;
+}
+
+.sourceAccountNumber{
+	width:100px;
+}
+
+.billerTransactionID{
+	width:100px;
+}
+
+.billerAccountNumber{
+	width:100px;
+}
+
+.transferAmount{
+	width:100px;
+}
+
+.status{
+	width:100px;
+}

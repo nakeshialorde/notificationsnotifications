@@ -1,0 +1,44 @@
+.qrscanner video {
+  max-width: 85%;
+  max-height: 50%;
+}
+
+.qrscanner{
+  display:inline-block;
+  vertical-align: middle;
+}
+
+body{
+  background:#000;
+}
+/*
+.row-element-set {
+  display: flex;
+  flex-direction: column;
+}
+.row-element {
+  padding: .2em 0em;
+}
+
+.row-element-set-QRScanner
+{
+  max-width: 30em; 
+  display: flex;
+  flex-direction: column;
+}
+
+body
+{
+  display: flex;
+  justify-content: center;
+}
+
+.form-field-caption {
+  font-weight: bold;
+}
+
+.form-field-input
+{
+ width: 100%; 
+}
+*/
