@@ -1,0 +1,202 @@
+$command = "";
+if (isset($_GET['command'])) { $command = $_GET['command']; }
+
+$user_id = "";
+if (isset($_GET['user_id'])) { $user_id = $_GET['user_id']; }
+
+if (strcmp($user_id,"") == 0)
+   { echo "
+Error: user_id must be specified as GET parameter."; exit; }
+
+if (strcmp($command,"") == 0)
+  {
+   echo "
+Sorry, no command specified. Exiting...";
+   exit;
+  }
+
+//Open the MySQL database connection here and select the database in which [notifications] table has been created
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "notifications_db";
+
+//Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+//Check connection
+if ($conn->connect_error)
+   {
+      die("Connection failed: " . $conn->connect_error);
+   }
+
+if (strcmp($command,"INSERT_NOTIFICATION") == 0)
+{
+   $notification_text = "";
+   if (isset($_GET['notification_text'])) { $notification_text = $_GET['notification_text']; }
+
+   $is_viewed = "";
+   if (isset($_GET['is_viewed'])) { $is_viewed = $_GET['is_viewed']; }
+   if (strcmp($notification_text,"") == 0)
+     {
+       echo "
+Error: notification_text must be specified as GET parameter.";
+       exit;
+    }
+   if (strcmp($is_viewed,"") == 0)
+    {
+      echo "
+Error: is_viewed must be specified as GET parameter.";
+      exit;
+    }
+
+  //Insert notification into the table for given user
+  $sql = "select * from notifications";
+  $result = $conn->query($sql);
+  $id = mysql_num_rows($result);
+  $id = $id + 1;
+  $creation_date_time = date("Y:m:d H:i:s");
+  $view_date_time = date("Y:m:d H:i:s");
+  $is_viewed = “NO”;
+  $sql = "INSERT INTO `notifications`(`id`, `creation_date_time`, `view_date_time`,
+  `user_id`, `notification_text`, `is_viewed`) VALUES ('".$id."',"'.$creation_date_time."','".$view_date_time."','".$user_id."','".$notification_text."','".$is_viewed."')";
+  $result = $conn->query($sql);
+  $conn->close();
+  exit;
+}
+
+
+if (strcmp($command,"FETCH_NOTIFICATIONS") == 0)
+{
+  //Select all notifications for a given user_id and return in JSON format
+  $sql = "select * from notifications where use_id = '".$user_id."' and is_viewed = ‘NO’ ";
+  $res = mysqli_query($con,$sql);
+  $result = array();
+  while($row = mysqli_fetch_array($res))
+   {
+      array_push($result,array('id'=>$row[0],'creation_date_time'=>$row[1],
+      'view_date_time'=>$row[2],'user_id'=>$row[3],'notification_text'=>$row[4],'is_viewed'=>$row[5]));
+   }
+   $conn->close();
+   echo json_encode(array("result"=>$result_array));
+   //Here you can format all notifications into well-organized HTML code just like Facebook in order to present in nice way
+   //For example purpose , it is being returned in JSON format
+   exit;
+}
+
+
+if (strcmp($command,"DELETE_NOTIFICATIONS") == 0)
+  {
+     //Delete all notifications for a given user_id
+     $sql = "delete from notifications where use_id = '".$user_id."'";
+     $res = mysqli_query($con,$sql);
+     $conn->close();
+     exit;
+  }
+
+if (strcmp($command,"SET_IS_VIEWED_FLAG") == 0)
+{
+//Update here is_viewed flag to YES for notification and user_id
+exit;
+}
+?>
+
+
+<script>
+$(document).ready(onclick(){
+  var thirdPartyEmailAddress = getQueryStringValue ('thirdPartyEmailAddress');
+  var myAccountSelect = getQueryStringValue ('myAccountSelect');
+	var thirdPartyAccountNumber = getQueryStringValue ('thirdPartyAccountNumber');
+	var amount = getQueryStringValue ('amount');
+	var recipientInfoType = getQueryStringValue ('recipientInfoType');
+	var optional = getQueryStringValue ('optional');
+
+  $('#thirdPartyEmailAddress').val(thirdPartyEmailAddress);
+  $('#myAccountSelect').val(myAccountSelect);
+  $('#thirdPartyAccountNumber').val(thirdPartyAccountNumber);
+  $('#amount').val(amount);
+  $('#recipientInfoType').val(recipientInfoType);
+  $('#optional').val(optional);
+
+function load_unseen_notification(view = '')
+ {
+   $.ajax({
+   url:"https://e-solutionsgroup.com:8021/notifications.php",
+   method:"POST",
+   data:{view:view},
+   dataType:"json",
+   success:onclick(data)
+   {
+    $('.requestForm').html(data.notification);
+    if(data.unseen_notification > 0)
+    {
+     $('.count').html(data.unseen_notification);
+    }
+   }
+  });
+ }
+
+ load_unseen_notification();
+
+ $('#requestform').on('submit', SubmitForm(){
+  event.preventDefault();
+  if($('#requestSubmit').val() != '' && $('#SubmitForm()').val() != '')
+  {
+   var form_data = $(this).serialize();
+   $.ajax({
+    url:"insert.php",
+    method:"POST",
+    data:form_data,
+    success:function(data)
+    {
+     $('#requestform')[0].reset();
+     load_unseen_notification();
+    }
+   });
+  }
+  else
+  {
+   alert("A notification will be sent to recipient!");
+  }
+ });
+
+ $(document).on('click', '.requestForm', SubmitForm(){
+  $('.count').html('');
+  load_unseen_notification('yes');
+ });
+
+ setInterval(SubmitForm(){
+  load_unseen_notification();;
+ }, 5000);
+});
+</script>
+
+<script src="https://use.fontawesome.com/5db033aace.js"></script>
+<script
+  src="https://code.jquery.com/jquery-3.2.1.js"
+  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+  crossorigin="anonymous">
+ </script>
+
+<script>
+	OneSignal.on('notificationDisplay', function (event) {
+	console.warn('OneSignal notification displayed:', event);
+
+  	 {
+      "id": "ce31de29-e1b0-4961-99ee-080644677cd7",
+      "heading": "Notification",
+      "content": "New Request Funds Notification.",
+      "url": "https://e-solutionsgroup.com:8021/notifications.php",
+      "icon": "https://onesignal.com/images/notification_logo.png"
+	  }
+
+});
+
+// Make sure OneSignal is initialized before listening to the event
+	var OneSignal = window.OneSignal || [];
+	OneSignal.on('(requestSubmit)', javascript:SubmitForm() {
+  // This callback fires every time the event occurs
+});
+	OneSignal.once('(requestSubmit)', SubmitForm() {
+  // This callback fires only once when the event occurs, and does not refire
+});
+</script>
